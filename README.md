@@ -33,7 +33,7 @@ docker build -t $PROJECT_ID/$IMAGE_NAME:$IMAGE_VERSION .
 As you can see below we're exposing port 8001 but you have to export the ports you need.
 
 ```
-docker run -p=8001:8001 -p=40022:22 -p=41521:1521 -it --rm -v $(pwd)/projects:/usr/projects -e ORACLE_ALLOW_REMOTE=true --name $CONTAINER_NAME $PROJECT_ID/$IMAGE_NAME:$IMAGE_VERSION /bin/bash
+docker run -p=40022:22 -p=41521:1521 -it --rm -v $(pwd)/projects:/usr/projects -e ORACLE_ALLOW_REMOTE=true --name $CONTAINER_NAME $PROJECT_ID/$IMAGE_NAME:$IMAGE_VERSION /bin/bash
 ```
 
 ## Example: running a cloud app and a service locally

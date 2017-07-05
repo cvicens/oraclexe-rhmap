@@ -28,40 +28,14 @@ export CONTAINER_NAME="oraclexe-rhmap-docker-dev"
 docker build -t $PROJECT_ID/$IMAGE_NAME:$IMAGE_VERSION .
 ```
 
-## Now let's run the image
-
-As you can see below we're exposing port 8001 but you have to export the ports you need.
+## Now let's run the image, interactive, no daemon
+As you can see below we're exposing port 40022 and 41521, and allowing remote access to Oracle
 
 ```
 docker run -p=40022:22 -p=41521:1521 -it --rm -v $(pwd)/projects:/usr/projects -e ORACLE_ALLOW_REMOTE=true --name $CONTAINER_NAME $PROJECT_ID/$IMAGE_NAME:$IMAGE_VERSION /bin/bash
 ```
 
-## Example: running a cloud app and a service locally
-Running locally a Cloud App that in its turn call a service also running locally.
-
-### Run the container exposing 8001
-
-```
-docker run -p=8001:8001 -it --rm -v $(pwd)/projects:/usr/projects --name $CONTAINER_NAME $PROJECT_ID/$IMAGE_NAME:$IMAGE_VERSION /bin/bash
-```
-
-### Running the service in background
-
-Clone both repos and run ``npm install`` (Cloud App and Service) then change dir to the service folder and run.
-
-```
-$ nohup grunt serve &
-```
-
-Now move to the cloud app folder and run
-
-```
-$ grunt serve:local
-```
-
-Finally use Postman, for instance, to call you cloud app running on port 8001 on your localhost.
-
-### Stop all and exit
+### Stop all and exit (because it's not running as a daemon)
 Type Ctrl+C and exit
 
 ## Oracle HR schema scripts

@@ -345,7 +345,24 @@ INSERT INTO HR.VTYPES (ID,DESCRIPTION) VALUES (7,'CICLOMOTORES');
 
 commit;
 
-create or replace PROCEDURE "HR".GET_VTARIFFS_RS (p_pro_id_in IN NUMBER, p_mun_id_in IN NUMBER, p_year_in IN NUMBER, p_recordset OUT SYS_REFCURSOR)
+create or replace PROCEDURE "HR".GET_VTARIFFS_RS (p_pro_id_in IN NUMBER, p_mun_id_in IN NUMBER, p_year_in IN NUMBER, p_mun_desc_out OUT VARCHAR2, p_recordset OUT SYS_REFCURSOR)
+   AS
+   BEGIN
+     SELECT MUNICIPALITY
+      INTO p_mun_desc_out
+      FROM  MUNICIPALITIES WHERE CMUN = p_mun_id_in;
+
+     OPEN p_recordset FOR
+       SELECT M.MUNICIPALITY, T.DESCRIPTION AS "VEHICLE TYPE", R.DESCRIPTION AS "TAX RANGE", TF."YEAR", TF.PRICE, TF.CURRENCY
+       FROM   "HR"."VT_TARIFFS" TF, "HR"."MUNICIPALITIES" M, "HR"."VTYPES"  T,  "HR"."VRANGES" R
+       WHERE  TF.PRO_ID = p_pro_id_in AND TF.MUN_ID = p_mun_id_in AND TF."YEAR" = p_year_in AND 
+              M.CPRO = TF.PRO_ID AND M.CMUN = TF.MUN_ID AND 
+              T.ID = TF.VTYPE_ID AND 
+              R.VTYPE_ID = TF.VTYPE_ID AND R.VRANGE_ID = TF.VRANGE_ID;
+  END;
+/
+
+  create or replace PROCEDURE "HR".GET_VTARIFFS_IDS_RS (p_pro_id_in IN NUMBER, p_mun_id_in IN NUMBER, p_year_in IN NUMBER, p_recordset OUT SYS_REFCURSOR)
    AS
    BEGIN
      OPEN p_recordset FOR
@@ -356,5 +373,4 @@ create or replace PROCEDURE "HR".GET_VTARIFFS_RS (p_pro_id_in IN NUMBER, p_mun_i
               T.ID = TF.VTYPE_ID AND 
               R.VTYPE_ID = TF.VTYPE_ID AND R.VRANGE_ID = TF.VRANGE_ID;
   END;
-
 /

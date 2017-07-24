@@ -35,6 +35,13 @@ As you can see below we're exposing port 40022 and 41521, and allowing remote ac
 docker run -p=40022:22 -p=41521:1521 -it --rm -v $(pwd)/projects:/usr/projects -e ORACLE_ALLOW_REMOTE=true --name $CONTAINER_NAME $PROJECT_ID/$IMAGE_NAME:$IMAGE_VERSION /bin/bash
 ```
 
+## To run it as daemon
+
+```
+docker run -p=40022:22 -p=41521:1521 -d -v $(pwd)/projects:/usr/projects -e ORACLE_ALLOW_REMOTE=true --name $CONTAINER_NAME $PROJECT_ID/$IMAGE_NAME:$IMAGE_VERSION
+```
+
+
 ### Stop all and exit (because it's not running as a daemon)
 Type Ctrl+C and exit
 
